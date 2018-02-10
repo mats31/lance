@@ -76,6 +76,7 @@ export default class ServerEngine {
         io.on('connection', this.onPlayerConnected.bind(this));
         this.gameEngine.on('objectAdded', this.onObjectAdded.bind(this));
         this.gameEngine.on('objectDestroyed', this.onObjectDestroyed.bind(this));
+        this.syncCounter = 0;
 
         return this;
     }
@@ -164,6 +165,9 @@ export default class ServerEngine {
     serializeUpdate(options) {
         let world = this.gameEngine.world;
         let diffUpdate = Boolean(options && options.diffUpdate);
+
+        // one in ten syncs is a full update
+        if (this.syncCounter++ % 10 === 0) diffUpdate = false;
 
         // add this sync header
         // currently this is just the sync step count

@@ -175,6 +175,7 @@ export default class ExtrapolateStrategy extends SyncStrategy {
             // if this was a full sync, and we did not get a corresponding object,
             // remove the local object
             if (sync.fullUpdate && !objEvents && objId < this.gameEngine.options.clientIDSpace) {
+              console.log(`================== REMOVING ${objId} as a result of fullUpdate data`);
                 this.gameEngine.removeObjectFromWorld(objId);
             }
 
